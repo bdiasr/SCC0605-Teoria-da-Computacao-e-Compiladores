@@ -2,7 +2,16 @@
 #include <stdlib.h>
 #include <string.h>
 #include <stdbool.h>
-#include "funcoes.h"
+
+#define TAM 1000
+
+//estrutura da lista de tokens e simbolos
+struct elemento{
+    char simbolo[20];
+    char token[20];
+};
+
+typedef struct elemento elem;
 
 //verifica se caractere corresponde a um numero
 bool numero(char x){
@@ -20,7 +29,7 @@ bool letra(char x){
     return true;
 }
 
-char* busca_palavra_reconhecida(char* palavra, struct elemento* lista_simbolos){
+char* busca_palavra_reconhecida(char* palavra, elem* lista_simbolos){
 
     int i;
     //percorre a lista de palavras reconhecidas
@@ -68,66 +77,40 @@ char* cria_lista_caracteres(){
     return lista;
 }
 
-struct elemento preenche_simbolos(FILE* file){
-
-    char linha[50];
-
-    while(!feof(file)){
-        
-        fgets(linha,50,file);
-
-        char simbolo[20];
-        char token[20];
-
-        int k = 0;
-        int i=0;
-        while(linha[i]!='|'){
-            simbolo[k] = linha[i];
-            k++;
-            i++;           
-        }
-        simbolo[k] = '\0';
-        
-        k = 0;
-        i++;
-        while(linha[i]!='\n' && linha[i]!='\0'){
-            token[k] = linha[i];
-            k++;
-            i++;
-        }
-        token[k] = '\0';
-        
-        struct elemento no;
-        strcpy(no.simbolo, simbolo);
-        strcpy(no.token, token);
-        return no;        
-    }
-
-}
-
-struct elemento* cria_lista_simbolos(){
+elem* cria_lista_simbolos(){
 
     //abrir tabela de simbolos
     FILE *list_s;
     list_s = fopen("tabela_simbolos.txt", "r");
-    int i;
     if(list_s == NULL){
         printf("erro na tabela de simbolos!\n");
         exit(1);
     }
 
-   struct elemento* lista = (struct elemento*) malloc (30*sizeof(struct elemento));
-    for(i = 0;i<29;i++){
-        lista[i] = preenche_simbolos(list_s);
+    elem *no = (elem*) malloc(sizeof(elem));
+    elem* lista = (elem*) malloc (28*sizeof(elem));
+    //elem no;
+    char simbolo[20];
+    char token[20];
+    int i = 0;
+
+    while(fscanf(list_s,"%[^|]%*c ",simbolo)==1){
+        fscanf(list_s,"%[^\n]%*c ",token);
+
+        strcpy(no[i].simbolo,simbolo);
+        strcpy(no[i].token,token);
+
+        //lista = *no;
+        i++;
+        
     }
-    
-    
+
     fclose(list_s);
     return lista;
 }
 
 //automato reconhecedor de palavras reservadas e identificadores
-int automato1(char* lista, int pos, struct elemento* list_simbolos,FILE *saida){
+int automato1(char* lista, int pos, elem* list_simbolos,FILE *saida){
 
     char palavra[30];
     palavra[0] = lista[pos];
@@ -223,7 +206,7 @@ int automato2(char* lista, int pos,FILE *saida){
 }
 
 //automato reconhecedor de simbolos unitarios
-int automato3(char* lista, int pos, struct elemento* list_simbolos,FILE *saida){
+int automato3(char* lista, int pos, elem* list_simbolos,FILE *saida){
 
     //ignorando caracteres iniciais da cadeia se forem espaco ou quebra de linha
     char simb[2];
@@ -252,7 +235,7 @@ int automato3(char* lista, int pos, struct elemento* list_simbolos,FILE *saida){
 }
 
 //automato reconhecedor de comparacoes
-int automato4(char* lista, int pos, struct elemento* list_simbolos,FILE *saida){
+int automato4(char* lista, int pos, elem* list_simbolos,FILE *saida){
 
     //ignorando caracteres iniciais da cadeia se forem espaco ou quebra de linha
     char simb[3];
@@ -309,7 +292,7 @@ int automato4(char* lista, int pos, struct elemento* list_simbolos,FILE *saida){
 }
 
 //automato reconhecedor de atribuicoes
-int automato5(char* lista, int pos, struct elemento* list_simbolos,FILE *saida){
+int automato5(char* lista, int pos, elem* list_simbolos,FILE *saida){
 
     //ignorando caracteres iniciais da cadeia se forem espaco ou quebra de linha
     char simb[3];
@@ -347,7 +330,7 @@ int automato5(char* lista, int pos, struct elemento* list_simbolos,FILE *saida){
     return pos;
 }
 
-//automato reconhecedor de atribuicoes
+//automato reconhecedor de comentarios
 int automato6(char* lista, int pos,FILE *saida){
 
     //ignorando caracteres iniciais da cadeia se forem espaco ou quebra de linha
@@ -357,7 +340,7 @@ int automato6(char* lista, int pos,FILE *saida){
     }
     palavra[0] = lista[pos];
 
-    //se nao iniciar com maior ou menor, nao eh comparacao
+    //se nao iniciar {, nao eh comentario
     if(palavra[0]!='{'){
         return pos;
     }
@@ -398,7 +381,7 @@ int automato6(char* lista, int pos,FILE *saida){
 }
 
 //analisador lexico
-void analisador (char* lista, struct elemento* lista_s){ //recebe lista de caracteres e de simbolos
+void analisador (char* lista, elem* lista_s){ //recebe lista de caracteres e de simbolos
 
     //abrir arquivo txt de saida
     FILE *saida;
@@ -454,12 +437,18 @@ void analisador (char* lista, struct elemento* lista_s){ //recebe lista de carac
 
 //funcao principal
 int main(int argc, char*argv[]){
+    int p;
 
     //cria lista de caracteres do arquivo
     char* lista_caracteres = cria_lista_caracteres();
 
     //cria e preenche lista de simbolos
-    struct elemento* lista_simbolos = cria_lista_simbolos();
+    elem* lista_simbolos = cria_lista_simbolos();
+    lista_simbolos  = (elem*) malloc(sizeof(elem));
+    for(p = 0;lista_simbolos[p].simbolo;p++){
+        //printf("%d\n", p);
+        printf("%s %s\n", lista_simbolos[p].simbolo,lista_simbolos[p].token);
+    }
 
     //chama analisador para o programa lido
     analisador(lista_caracteres,lista_simbolos);
@@ -471,4 +460,16 @@ int main(int argc, char*argv[]){
     //finaliza execucao
     return 0;
 
+}
+
+void imprime_lista(elem* li){
+    if(li == NULL)
+        return;
+    elem* no = li;
+
+    while(no != NULL){
+        printf("simbolo: %s, token: %s\n",no->simbolo, no->token);
+        no = no->;
+    }
+    printf("-------------- FIM LISTA -----------------\n");
 }
