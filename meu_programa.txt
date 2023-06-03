@@ -1,0 +1,8 @@
+program p;
+var x@: integer;
+begin
+        {teste teste som som}
+        x:=1.2;
+        while(x<3) do
+                x:=x+1
+end.
