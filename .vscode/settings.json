@@ -1,0 +1,10 @@
+{
+    "files.associations": {
+        "*.py": "python",
+        "*.c": "c",
+        "stdlib.h": "c",
+        "automatos.h": "c",
+        "funcoes.h": "c",
+        "stdio.h": "c"
+    }
+}
