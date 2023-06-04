@@ -2,9 +2,116 @@
 #include <stdlib.h>
 #include <string.h>
 #include <stdbool.h>
+#include <ctype.h>
 #include "funcoes.h"
 #include "automatos.h"
 
+
+#define MAX_SIZE 100
+
+int isSpecialChar(char c) {
+    char specialChars[] = { ';', '@', ':', '.', '{', '}', '(', ')' };
+    int numSpecialChars = sizeof(specialChars) / sizeof(char);
+    for (int i = 0; i < numSpecialChars; i++) {
+        if (c == specialChars[i]) {
+            return 1;
+        }
+    }
+    return 0;
+}
+
+void printWords(char** words, int numWords) {
+    for (int i = 0; i < numWords; i++) {
+        printf("%s\n", words[i]);
+    }
+}
+
+
+
+void lista_caracteres(FILE* arquivo ){
+
+    char** vetor = (char**) malloc(1000 * sizeof(char*));
+    if (vetor == NULL) {
+        printf("Erro ao alocar memória.\n");
+        return;
+    }
+
+    char palavra[100];
+    int indice = 0;
+    int i, pos = 0;
+
+    // Lê cada palavra do arquivo
+    while (fscanf(arquivo, "%s", palavra) == 1) {
+        int tamanhoPalavra = strlen(palavra);
+        int caracteresEspeciais = 0;
+        int temCaractereEspecial = 0;
+
+        // Verifica se a palavra contém caracteres especiais
+        for (i = 0; i < tamanhoPalavra; i++) {
+            if (!isalpha(palavra[i]) && !isdigit(palavra[i])) {
+                caracteresEspeciais++;
+                temCaractereEspecial = 1;
+                break;
+            }
+        }
+
+        // Cria uma nova palavra para armazenar a palavra completa
+        char* novaPalavra = (char*) malloc((tamanhoPalavra + 1) * sizeof(char));
+        strcpy(novaPalavra, palavra);
+
+        // Isola os caracteres especiais
+        if (temCaractereEspecial) {
+            pos = 0;
+
+            // Cria uma nova palavra para armazenar a parte da palavra sem o caractere especial
+            char* novaPalavraSemCaractereEspecial = (char*) malloc((tamanhoPalavra + 1) * sizeof(char));
+            memset(novaPalavraSemCaractereEspecial, 0, (tamanhoPalavra + 1) * sizeof(char));
+
+            for (i = 0; i < tamanhoPalavra; i++) {
+                if (isalpha(palavra[i]) && isdigit(palavra[i])) {
+                    // Salva o caractere especial no vetor de palavras
+                    char* caractereEspecial = (char*) malloc(2 * sizeof(char));
+                    caractereEspecial[0] = palavra[i];
+                    caractereEspecial[1] = '\0';
+                    vetor[indice] = caractereEspecial;
+                    indice++;
+                } else {
+                    // Salva a parte da palavra sem o caractere especial
+                    novaPalavraSemCaractereEspecial[pos] = palavra[i];
+                    pos++;  
+                }
+            }
+            // Salva a parte da palavra sem o caractere especial no vetor de palavras
+            vetor[indice] = novaPalavraSemCaractereEspecial;
+            indice++;
+            printf("Palavra sem caractere especial: %s\n", novaPalavraSemCaractereEspecial);
+        } else {
+            // Salva a palavra completa no vetor de palavras
+            vetor[indice] = novaPalavra;
+            indice++;
+        }
+
+        // Verifica se a palavra contém caracteres especiais
+        if (temCaractereEspecial) {
+            printf("Palavra com caractere especial: %s\n", palavra);
+        } else {
+            printf("Palavra sem caractere especial: %s\n", palavra);
+        }
+    }
+
+    // Exibe as palavras no vetor
+    printf("Palavras no vetor:\n");
+    for (int i = 0; i < indice; i++) {
+        printf("%s\n", vetor[i]);
+    }
+
+    // Libera a memória alocada
+    for (int i = 0; i < indice; i++) {
+        free(vetor[i]);
+    }
+    free(vetor);
+
+}
 
 //verifica se caractere corresponde a um numero
 bool numero(char x){
@@ -227,3 +334,36 @@ Lista* cria_lista(){
         *li = NULL;
     return li;
 }
+
+/*
+int insere_lista_ordenada(Lista* li, Tipo_Dado dt){
+    if (li == NULL) return ERRO;
+    Elem *no = (Elem*) malloc(sizeof(Elem));
+    if (no == NULL) return ERRO;
+
+    strcpy(no->dado, dt);
+    if ((*li) == NULL) { //lista vazia: insere in�cio
+        no->prox = NULL;
+        *li = no;
+        return OK;
+    }
+    else {
+        Elem *ant, *atual = *li;
+        while (atual != NULL && atual->dado < dt) {
+            ant = atual;
+            atual = atual->prox;
+        }
+        if (atual == *li) { //insere inicio
+            no->prox = (*li);
+            *li = no;
+        }
+        else
+        {
+            no->prox = atual;
+            ant->prox = no;
+        }
+        return OK;
+    }
+
+}
+*/

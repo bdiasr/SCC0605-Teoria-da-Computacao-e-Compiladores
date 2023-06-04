@@ -31,3 +31,10 @@ Lista* cria_lista_simbolos();
 
 //void analisador (char* lista, elem* lista_s);
 //char* busca_palavra_reconhecida(char* palavra, elem* lista_simbolos);
+
+
+void lista_caracteres(FILE* arq );
+
+//int insere_lista_ordenada(Lista* li, Tipo_Dado dt);
+int isSpecialChar(char c); 
+void printWords(char** words, int numWords); 
