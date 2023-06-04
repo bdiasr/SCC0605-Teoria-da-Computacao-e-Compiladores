@@ -44,6 +44,7 @@ void lista_caracteres(FILE* arquivo ){
         int i;
         int tamanhoPalavra = strlen(palavra);
         int caracteresEspeciais = 0;
+        char aux[2];
 
         // Verifica se a palavra contém caracteres especiais
         for (i = 0; i < tamanhoPalavra; i++) {
@@ -74,12 +75,16 @@ void lista_caracteres(FILE* arquivo ){
 
                     //O PROBLEMA ESTA AQUI ESTA SALVANDO APENAS UM DIGITO 
                     // Cria uma nova palavra para armazenar a parte da palavra sem o caractere especial
-                    char* novaPalavra1 = (char*) malloc(2 * sizeof(char));
-                    novaPalavra1[0] = palavra[i];
+                    char* novaPalavra1 = (char*) malloc((tamanhoPalavra + 1) * sizeof(char));
+                    aux[0] = palavra[i];
+                    //novaPalavra1[0] = palavra[i];
                     novaPalavra1[1] = '\0';
 
+                    strcat(novaPalavra1, aux); // concatena valores em cat
+                    
                     // Salva a nova palavra sem o caractere especial no vetor de palavras
                     vetor[indice] = novaPalavra1;
+                    printf("palavra apos caracteres especiais: %s\n", novaPalavra1);
                     indice++;
                 }
             }
