@@ -33,24 +33,22 @@ void lista_caracteres(FILE* arquivo ){
     char** vetor = (char**) malloc(1000 * sizeof(char*));
     if (vetor == NULL) {
         printf("Erro ao alocar memória.\n");
-        return;
     }
 
     char palavra[100];
+
     int indice = 0;
-    int i, pos = 0;
 
     // Lê cada palavra do arquivo
     while (fscanf(arquivo, "%s", palavra) == 1) {
+        int i;
         int tamanhoPalavra = strlen(palavra);
         int caracteresEspeciais = 0;
-        int temCaractereEspecial = 0;
 
         // Verifica se a palavra contém caracteres especiais
         for (i = 0; i < tamanhoPalavra; i++) {
             if (!isalpha(palavra[i]) && !isdigit(palavra[i])) {
                 caracteresEspeciais++;
-                temCaractereEspecial = 1;
                 break;
             }
         }
@@ -60,46 +58,42 @@ void lista_caracteres(FILE* arquivo ){
         strcpy(novaPalavra, palavra);
 
         // Isola os caracteres especiais
-        if (temCaractereEspecial) {
-            pos = 0;
-
-            // Cria uma nova palavra para armazenar a parte da palavra sem o caractere especial
-            char* novaPalavraSemCaractereEspecial = (char*) malloc((tamanhoPalavra + 1) * sizeof(char));
-            memset(novaPalavraSemCaractereEspecial, 0, (tamanhoPalavra + 1) * sizeof(char));
-
+        if (caracteresEspeciais > 0) {
             for (i = 0; i < tamanhoPalavra; i++) {
-                if (isalpha(palavra[i]) && isdigit(palavra[i])) {
-                    // Salva o caractere especial no vetor de palavras
-                    char* caractereEspecial = (char*) malloc(2 * sizeof(char));
-                    caractereEspecial[0] = palavra[i];
-                    caractereEspecial[1] = '\0';
-                    vetor[indice] = caractereEspecial;
+                if (!isalpha(palavra[i]) && !isdigit(palavra[i])) {
+
+                    // Cria uma nova palavra para armazenar o caractere especial isolado
+                    char* novaPalavra2 = (char*) malloc(2 * sizeof(char));
+                    novaPalavra2[0] = palavra[i];
+                    novaPalavra2[1] = '\0';
+
+                    // Salva a nova palavra com o caractere especial no vetor de palavras
+                    vetor[indice] = novaPalavra2;
                     indice++;
                 } else {
-                    // Salva a parte da palavra sem o caractere especial
-                    novaPalavraSemCaractereEspecial[pos] = palavra[i];
-                    pos++;  
+
+                    //O PROBLEMA ESTA AQUI ESTA SALVANDO APENAS UM DIGITO 
+                    // Cria uma nova palavra para armazenar a parte da palavra sem o caractere especial
+                    char* novaPalavra1 = (char*) malloc(2 * sizeof(char));
+                    novaPalavra1[0] = palavra[i];
+                    novaPalavra1[1] = '\0';
+
+                    // Salva a nova palavra sem o caractere especial no vetor de palavras
+                    vetor[indice] = novaPalavra1;
+                    indice++;
                 }
             }
-            // Salva a parte da palavra sem o caractere especial no vetor de palavras
-            vetor[indice] = novaPalavraSemCaractereEspecial;
-            indice++;
-            printf("Palavra sem caractere especial: %s\n", novaPalavraSemCaractereEspecial);
         } else {
             // Salva a palavra completa no vetor de palavras
             vetor[indice] = novaPalavra;
             indice++;
         }
-
-        // Verifica se a palavra contém caracteres especiais
-        if (temCaractereEspecial) {
-            printf("Palavra com caractere especial: %s\n", palavra);
-        } else {
-            printf("Palavra sem caractere especial: %s\n", palavra);
-        }
     }
 
-    // Exibe as palavras no vetor
+    // Fecha o arquivo
+    fclose(arquivo);
+
+    // Exibe as palavras do vetor
     printf("Palavras no vetor:\n");
     for (int i = 0; i < indice; i++) {
         printf("%s\n", vetor[i]);
@@ -184,6 +178,7 @@ char* cria_lista_caracteres(){
 }
 
 
+/*
 Lista* cria_lista_simbolos(){
 
     //abrir tabela de simbolos
@@ -230,7 +225,7 @@ Lista* cria_lista_simbolos(){
                 ant->prox = no;
             }
         }
-
+*/ 
 
         /*
         if ((*li) == NULL) { //lista vazia: insere in�cio
@@ -254,11 +249,12 @@ Lista* cria_lista_simbolos(){
                 break; 
             }
         }
-        */
+        
     }
     fclose(list_s);
     return li;
 }
+*/ 
 
 /*
 //analisador lexico
