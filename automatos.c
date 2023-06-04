@@ -4,6 +4,7 @@
 #include <stdbool.h>
 #include "funcoes.h"
 
+/*
 //automato reconhecedor de palavras reservadas e identificadores
 int automato1(char* lista, int pos, elem* list_simbolos,FILE *saida){
 
@@ -274,3 +275,5 @@ int automato6(char* lista, int pos,FILE *saida){
     }
     
 }
+
+*/

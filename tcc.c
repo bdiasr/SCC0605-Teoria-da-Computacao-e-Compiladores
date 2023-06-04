@@ -11,7 +11,8 @@ int main(int argc, char*argv[]){
     int p;
 
     //cria lista de caracteres do arquivo
-    Lista* lista_entrada = cria_lista_caracteres();
+    Lista* lista_entrada = cria_lista();
+    //cria_lista_caracteres();
     imprime_lista(lista_entrada);
 
     //cria e preenche lista de simbolos

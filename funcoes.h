@@ -15,14 +15,15 @@ struct elemento{
 typedef struct elemento elem;
 typedef struct elemento* Lista;
 
-
 bool numero(char x);
-char* cria_lista_caracteres();
-char* busca_palavra_reconhecida(char* palavra, elem* lista_simbolos);
 bool letra(char x);
 
-elem* cria_lista_simbolos();
+//Lista* cria_lista_caracteres();
 
 Lista* cria_lista();
 void imprime_lista(Lista* li);
-void analisador (char* lista, elem* lista_s);
+
+
+//elem* cria_lista_simbolos();
+//void analisador (char* lista, elem* lista_s);
+//char* busca_palavra_reconhecida(char* palavra, elem* lista_simbolos);

@@ -22,6 +22,7 @@ bool letra(char x){
     return true;
 }
 
+/*
 char* busca_palavra_reconhecida(char* palavra, elem* lista_simbolos){
 
     int i;
@@ -34,10 +35,11 @@ char* busca_palavra_reconhecida(char* palavra, elem* lista_simbolos){
     }
     return "id"; //se nao encontrou simbolo igual, retorna que eh um id
 }
+*/
 
-
+/*
 //cria e preenche lista de caracteres de entrada
-char* cria_lista_caracteres(){
+Lista* cria_lista_caracteres(){
 
 
     //char* lista = (char*) malloc (TAM*sizeof(char));
@@ -73,7 +75,9 @@ char* cria_lista_caracteres(){
     fclose(prog_inicial);
     return lista_entrada;
 }
+*/
 
+/*
 elem* cria_lista_simbolos(){
 
     //abrir tabela de simbolos
@@ -105,40 +109,8 @@ elem* cria_lista_simbolos(){
     fclose(list_s);
     return lista;
 }
-
-elem* cria_lista_simbolos(){
-
-    //abrir tabela de simbolos
-    FILE *list_s;
-    list_s = fopen("tabela_simbolos.txt", "r");
-    if(list_s == NULL){
-        printf("erro na tabela de simbolos!\n");
-        exit(1);
-    }
-
-    elem *no = (elem*) malloc(sizeof(elem));
-    elem* lista = (elem*) malloc (28*sizeof(elem));
-    //elem no;
-    char simbolo[20];
-    char token[20];
-    int i = 0;
-
-    while(fscanf(list_s,"%[^|]%*c ",simbolo)==1){
-        fscanf(list_s,"%[^\n]%*c ",token);
-
-        strcpy(no[i].simbolo,simbolo);
-        strcpy(no[i].token,token);
-
-        //lista = *no;
-        i++;
-        
-    }
-
-    fclose(list_s);
-    return lista;
-}
-
-
+*/
+/*
 //analisador lexico
 void analisador (char* lista, elem* lista_s){ //recebe lista de caracteres e de simbolos
 
@@ -191,20 +163,19 @@ void analisador (char* lista, elem* lista_s){ //recebe lista de caracteres e de 
     //fecha arquivo txt de saida
     fclose(saida);
 }
-
+*/
 
 void imprime_lista(Lista* li){
     if(li == NULL)
         return;
-
     elem* no = *li;
-
     while(no != NULL){
-        printf("simbolo: %s, token: %s\n",no->simbolo, no->token);
+        printf("Dado: %s\n",no->token);
         no = no->prox;
     }
     printf("-------------- FIM LISTA -----------------\n");
 }
+
 
 Lista* cria_lista(){
     Lista* li;
