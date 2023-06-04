@@ -37,17 +37,15 @@ char* busca_palavra_reconhecida(char* palavra, elem* lista_simbolos){
 }
 */
 
-/*
+
 //cria e preenche lista de caracteres de entrada
-Lista* cria_lista_caracteres(){
+char* cria_lista_caracteres(){
 
-
-    //char* lista = (char*) malloc (TAM*sizeof(char));
-    Lista* lista_entrada = cria_lista();
+    char* lista = (char*) malloc (TAM*sizeof(char));
 
     int i;
     for(i = 0;i<TAM;i++){
-        lista_entrada[i] = '\0';
+        lista[i] = '\0';
     }
 
     //abrir arquivo txt de entrada
@@ -62,20 +60,22 @@ Lista* cria_lista_caracteres(){
     while(!feof(prog_inicial)){
         char p = fgetc(prog_inicial);
         int i;
+
         if(p!='\t' && p!=feof(prog_inicial)){
+            
             for(i = 0;i<TAM;i++){
-                if(lista_entrada[i]=='\0'){
-                    lista_entrada[i] = p;
+                if(lista[i]=='\0'){
+                    lista[i] = p;
                     break;
                 }
+            
             }
         }
     }
-
     fclose(prog_inicial);
-    return lista_entrada;
+    return lista;
 }
-*/
+
 
 /*
 elem* cria_lista_simbolos(){
@@ -170,7 +170,7 @@ void imprime_lista(Lista* li){
         return;
     elem* no = *li;
     while(no != NULL){
-        printf("Dado: %s\n",no->token);
+        printf("Dado: %s\n",no->dado);
         no = no->prox;
     }
     printf("-------------- FIM LISTA -----------------\n");

@@ -3,6 +3,7 @@
 #include <string.h>
 #include <stdbool.h>
 #include "funcoes.h"
+#include "automatos.h"
 
 /*
 //automato reconhecedor de palavras reservadas e identificadores

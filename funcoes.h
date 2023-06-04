@@ -2,23 +2,31 @@
 #include <stdlib.h>
 #include <string.h>
 #include <stdbool.h>
+#include "automatos.h" 
 
 #define TAM 1000
 
-//estrutura da lista de tokens e simbolos
+typedef char Dado[20];
 struct elemento{
+    Dado dado;
+    struct elemento *prox;
+};
+typedef struct elemento elem;
+typedef struct elemento* Lista;
+
+
+//estrutura da lista de tokens e simbolos
+struct elemento_simbolos_token{
     char simbolo[20];
     char token[20];
     struct elemento *prox;
 };
 
-typedef struct elemento elem;
-typedef struct elemento* Lista;
 
 bool numero(char x);
 bool letra(char x);
 
-//Lista* cria_lista_caracteres();
+char* cria_lista_caracteres();
 
 Lista* cria_lista();
 void imprime_lista(Lista* li);
