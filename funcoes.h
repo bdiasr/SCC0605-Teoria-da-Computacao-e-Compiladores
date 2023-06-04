@@ -7,20 +7,17 @@
 #define TAM 1000
 
 typedef char Dado[20];
-struct elemento{
-    Dado dado;
-    struct elemento *prox;
-};
-typedef struct elemento elem;
-typedef struct elemento* Lista;
-
 
 //estrutura da lista de tokens e simbolos
-struct elemento_simbolos_token{
+struct elemento{
     char simbolo[20];
     char token[20];
     struct elemento *prox;
 };
+
+typedef struct elemento elem;
+typedef struct elemento* Lista;
+
 
 
 bool numero(char x);
@@ -30,8 +27,7 @@ char* cria_lista_caracteres();
 
 Lista* cria_lista();
 void imprime_lista(Lista* li);
+Lista* cria_lista_simbolos();
 
-
-//elem* cria_lista_simbolos();
 //void analisador (char* lista, elem* lista_s);
 //char* busca_palavra_reconhecida(char* palavra, elem* lista_simbolos);

@@ -12,13 +12,12 @@ int main(int argc, char*argv[]){
 
     //cria lista de caracteres do arquivo
     char* lista_entrada = cria_lista_caracteres();
-    //imprime_lista(lista_entrada);
 
     //cria e preenche lista de simbolos
-    //Lista* lista_simbolos = cria_lista_simbolos();
+    Lista* lista_simbolos = cria_lista_simbolos();
     //lista_simbolos  = (elem*) malloc(sizeof(elem));
     
-    //imprime_lista(lista_simbolos);
+    imprime_lista(lista_simbolos);
 
     //chama analisador para o programa lido
     //analisador(lista_entrada,lista_simbolos);

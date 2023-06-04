@@ -77,8 +77,7 @@ char* cria_lista_caracteres(){
 }
 
 
-/*
-elem* cria_lista_simbolos(){
+Lista* cria_lista_simbolos(){
 
     //abrir tabela de simbolos
     FILE *list_s;
@@ -89,7 +88,8 @@ elem* cria_lista_simbolos(){
     }
 
     elem *no = (elem*) malloc(sizeof(elem));
-    elem* lista = (elem*) malloc (28*sizeof(elem));
+    //elem* lista = (elem*) malloc (28*sizeof(elem));
+    Lista* li = cria_lista();
     //elem no;
     char simbolo[20];
     char token[20];
@@ -100,16 +100,59 @@ elem* cria_lista_simbolos(){
 
         strcpy(no[i].simbolo,simbolo);
         strcpy(no[i].token,token);
-
-        //lista = *no;
         i++;
-        
-    }
 
+        if ((*li) == NULL) { //lista vazia: insere in�cio
+            no->prox = NULL;
+            *li = no;
+        }
+        else{
+            elem *ant, *atual = *li;
+            //while(no != NULL){
+                ant = atual; 
+                atual = atual->prox;
+            //}
+            if (atual == *li) { //insere inicio
+                no->prox = (*li);
+                *li = no;
+            }
+            else
+            {
+                no->prox = atual;
+                printf("simbolo: %s token %s\n",no->simbolo, no->token);
+                ant->prox = no;
+            }
+        }
+
+
+        /*
+        if ((*li) == NULL) { //lista vazia: insere in�cio
+            no->prox = NULL;
+            *li = no;
+        }
+        else{
+            elem *ant, *atual = *li;
+            while (atual != NULL){
+                ant = atual;
+                atual = atual->prox;
+                if (atual == *li) { //insere inicio
+                    no->prox = (*li);
+                    *li = no;
+                }
+                else
+                {
+                    no->prox = atual;
+                    ant->prox = no;
+                }
+                break; 
+            }
+        }
+        */
+    }
     fclose(list_s);
-    return lista;
+    return li;
 }
-*/
+
 /*
 //analisador lexico
 void analisador (char* lista, elem* lista_s){ //recebe lista de caracteres e de simbolos
@@ -170,7 +213,7 @@ void imprime_lista(Lista* li){
         return;
     elem* no = *li;
     while(no != NULL){
-        printf("Dado: %s\n",no->dado);
+        printf("simbolo: %s token %s\n",no->simbolo, no->token);
         no = no->prox;
     }
     printf("-------------- FIM LISTA -----------------\n");
