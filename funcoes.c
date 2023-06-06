@@ -26,8 +26,13 @@ void printWords(char** words, int numWords) {
     }
 }
 
-
-
+/*
+    Função que lê o arquivo fonte palavra a palavra, e caractere a caractere, e retorna lista com os lexemas separados.
+    Cada palavra pode se enquadrar em um de três casos:
+    1 - Inteiramente alfanumérica
+    2 - Com caracter especial apenas no final
+    3 - Com caracteres especiais interlacados entre os alfanuméricos
+*/
 void lista_caracteres(FILE* arquivo ){
 
     char** vetor = (char**) malloc(1000 * sizeof(char*));
@@ -45,7 +50,7 @@ void lista_caracteres(FILE* arquivo ){
         int tamanhoPalavra = strlen(palavra);
         int caracteresEspeciais = 0;
         char aux[2];
-        bool notAlfa = false;
+        bool usada = false;
 
         // Verifica se a palavra contém caracteres especiais
         for (i = 0; i < tamanhoPalavra; i++) {
@@ -55,31 +60,47 @@ void lista_caracteres(FILE* arquivo ){
             }
         }
 
+        /*novaPalavra será passada diretamente para a lista de lexemas caso não tenha nenhum caractere especial (Caso 1)*/
         // Cria uma nova palavra para armazenar a palavra completa
         char* novaPalavra = (char*) malloc((tamanhoPalavra + 1) * sizeof(char));
-        
         strcpy(novaPalavra, palavra);
 
+        /*novaPalavra1 será passada lista de lexemas, após o caractere especial ser separado dela (Caso 2)*/
         // Cria uma nova palavra para armazenar a parte da palavra sem o caractere especial
         char* novaPalavra1 = (char*) malloc((tamanhoPalavra + 1) * sizeof(char));
         novaPalavra1[0] = '\0';
         novaPalavra1[1] = '\0';
 
+        /* Se a palavra não tem caracteres especiais, é caso 1. Se tiver, pode ser caso 2 ou 3*/
         // Isola os caracteres especiais
         if (caracteresEspeciais > 0) {
             for (i = 0; i < tamanhoPalavra; i++) {
                 if(isalpha(palavra[i]) || isdigit(palavra[i])){
                     aux[0] = palavra[i];
 
-                    strcat(novaPalavra1, aux); // concatena valores em novaPalavra1
+                    /*Caso 3 -> Palavra com caracteres especiais interlacados entre os alfanuméricos*/
+                    if(usada == 1){
+                        char* palavraAux = (char*) malloc((tamanhoPalavra + 1) * sizeof(char));
+                        palavraAux[0] = '\0';
+                        palavraAux[1] = '\0';
+                        strcat(palavraAux, aux);
+                        vetor[indice] = palavraAux;
+                    }else{
+                        /*Caso 2 -> Palavra com caracter especial apenas no final*/
+                        strcat(novaPalavra1, aux); // concatena valores em novaPalavra1
+                    }
 
+                    /*Faz a separação do caractere especial interlacado na palavra e o adiciona à lista de palavras*/
                     if(!isalpha(palavra[i+1]) && !isdigit(palavra[i+1])){
-
-                        vetor[indice] = novaPalavra1;
+                        if(usada == 0){
+                            vetor[indice] = novaPalavra1;
+                        }
                         indice++;
+                        usada = true;
 
                     }
                 }else{
+                    /*novaPalavra2 será passada lista de lexemas pois é o caractere separado de  novaPalavra1 (Caso 2)*/
                     // Cria uma nova palavra para armazenar o caractere especial isolado
                     char* novaPalavra2 = (char*) malloc(2 * sizeof(char));
                     novaPalavra2[0] = palavra[i];
@@ -89,12 +110,11 @@ void lista_caracteres(FILE* arquivo ){
                     // Salva a nova palavra com o caractere especial no vetor de palavras
                     vetor[indice] = novaPalavra2;
                     indice++;
-
-                    //strcpy(novaPalavra1,"");
                     
                 }
             }
         } else {
+            /*Caso 1 -> palavra estritamente alfanumérica*/
             // Salva a palavra completa no vetor de palavras
             vetor[indice] = novaPalavra;
             indice++;
