@@ -65,8 +65,6 @@ void lista_caracteres(FILE* arquivo ){
         novaPalavra1[0] = '\0';
         novaPalavra1[1] = '\0';
 
-        printf("NOVA PALAVRA -> %s \n", novaPalavra); //APAGAR
-
         // Isola os caracteres especiais
         if (caracteresEspeciais > 0) {
             for (i = 0; i < tamanhoPalavra; i++) {
@@ -78,9 +76,6 @@ void lista_caracteres(FILE* arquivo ){
                     if(!isalpha(palavra[i+1]) && !isdigit(palavra[i+1])){
 
                         vetor[indice] = novaPalavra1;
-                        
-                        printf("VETOR-> %d PALAVRA->%s\n", indice, vetor[indice]);
-
                         indice++;
 
                     }
@@ -93,9 +88,6 @@ void lista_caracteres(FILE* arquivo ){
                     
                     // Salva a nova palavra com o caractere especial no vetor de palavras
                     vetor[indice] = novaPalavra2;
-
-                    printf("VETOR-> %d PALAVRA->%s\n", indice, vetor[indice]);
-
                     indice++;
 
                     //strcpy(novaPalavra1,"");
@@ -105,8 +97,6 @@ void lista_caracteres(FILE* arquivo ){
         } else {
             // Salva a palavra completa no vetor de palavras
             vetor[indice] = novaPalavra;
-
-            printf("VETOR-> %d PALAVRA->%s\n", indice, vetor[indice]);
             indice++;
         }
     }
@@ -117,7 +107,7 @@ void lista_caracteres(FILE* arquivo ){
     // Exibe as palavras do vetor
     printf("Palavras no vetor:\n");
     for (int i = 0; i < indice; i++) {
-        printf("indice ->%d palavra ->%s\n", i, vetor[i]);
+        printf("%s\n", vetor[i]);
     }
 
     // Libera a memória alocada
