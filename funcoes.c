@@ -45,6 +45,7 @@ void lista_caracteres(FILE* arquivo ){
         int tamanhoPalavra = strlen(palavra);
         int caracteresEspeciais = 0;
         char aux[2];
+        bool notAlfa = false;
 
         // Verifica se a palavra contém caracteres especiais
         for (i = 0; i < tamanhoPalavra; i++) {
@@ -56,41 +57,56 @@ void lista_caracteres(FILE* arquivo ){
 
         // Cria uma nova palavra para armazenar a palavra completa
         char* novaPalavra = (char*) malloc((tamanhoPalavra + 1) * sizeof(char));
+        
         strcpy(novaPalavra, palavra);
+
+        // Cria uma nova palavra para armazenar a parte da palavra sem o caractere especial
+        char* novaPalavra1 = (char*) malloc((tamanhoPalavra + 1) * sizeof(char));
+        novaPalavra1[0] = '\0';
+        novaPalavra1[1] = '\0';
+
+        printf("NOVA PALAVRA -> %s \n", novaPalavra); //APAGAR
 
         // Isola os caracteres especiais
         if (caracteresEspeciais > 0) {
             for (i = 0; i < tamanhoPalavra; i++) {
-                if (!isalpha(palavra[i]) && !isdigit(palavra[i])) {
+                if(isalpha(palavra[i]) || isdigit(palavra[i])){
+                    aux[0] = palavra[i];
 
+                    strcat(novaPalavra1, aux); // concatena valores em novaPalavra1
+
+                    if(!isalpha(palavra[i+1]) && !isdigit(palavra[i+1])){
+
+                        vetor[indice] = novaPalavra1;
+                        
+                        printf("VETOR-> %d PALAVRA->%s\n", indice, vetor[indice]);
+
+                        indice++;
+
+                    }
+                }else{
                     // Cria uma nova palavra para armazenar o caractere especial isolado
                     char* novaPalavra2 = (char*) malloc(2 * sizeof(char));
                     novaPalavra2[0] = palavra[i];
                     novaPalavra2[1] = '\0';
 
+                    
                     // Salva a nova palavra com o caractere especial no vetor de palavras
                     vetor[indice] = novaPalavra2;
+
+                    printf("VETOR-> %d PALAVRA->%s\n", indice, vetor[indice]);
+
                     indice++;
-                } else {
 
-                    //O PROBLEMA ESTA AQUI ESTA SALVANDO APENAS UM DIGITO 
-                    // Cria uma nova palavra para armazenar a parte da palavra sem o caractere especial
-                    char* novaPalavra1 = (char*) malloc((tamanhoPalavra + 1) * sizeof(char));
-                    aux[0] = palavra[i];
-                    //novaPalavra1[0] = palavra[i];
-                    novaPalavra1[1] = '\0';
-
-                    strcat(novaPalavra1, aux); // concatena valores em cat
+                    //strcpy(novaPalavra1,"");
                     
-                    // Salva a nova palavra sem o caractere especial no vetor de palavras
-                    vetor[indice] = novaPalavra1;
-                    printf("palavra apos caracteres especiais: %s\n", novaPalavra1);
-                    indice++;
                 }
             }
         } else {
             // Salva a palavra completa no vetor de palavras
             vetor[indice] = novaPalavra;
+
+            printf("VETOR-> %d PALAVRA->%s\n", indice, vetor[indice]);
             indice++;
         }
     }
@@ -101,7 +117,7 @@ void lista_caracteres(FILE* arquivo ){
     // Exibe as palavras do vetor
     printf("Palavras no vetor:\n");
     for (int i = 0; i < indice; i++) {
-        printf("%s\n", vetor[i]);
+        printf("indice ->%d palavra ->%s\n", i, vetor[i]);
     }
 
     // Libera a memória alocada
