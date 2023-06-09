@@ -1,8 +1,7 @@
-program outroteste;
-{erro de caracter fora da linguagem}
-var a, minhavariavel: integer;
-begin
-read(minhavariavel,@,1.a23);
-B:=2.34a
-a:=2*(minhavariavel+3);
-end.
+>
+<>
+<
+<=
+>=
+=
+teste=3.45

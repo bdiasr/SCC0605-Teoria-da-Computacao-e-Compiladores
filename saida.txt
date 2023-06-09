@@ -1,37 +1,9 @@
-program, simb_program
-outroteste, id
-;, simb_pv
-{erro de caracter fora da linguagem}, comment
-var, simb_var
-a, id
-,, simb_virg
-minhavariavel, id
-:, simb_dp
-integer, simb_integer
-;, simb_pv
-begin, simb_begin
-read, simb_read
-(, simb_par1
-minhavariavel, id
-,, simb_virg
-@, erro('caractere nao permitido')
-,, simb_virg
-1.a, erro: numero real incompleto
-23, num_inteiro
-), simb_par2
-;, simb_pv
-b, id
-:=, simb_atrib
-2.34, num_real
-a, id
-:=, simb_atrib
-2, num_inteiro
-*, simb_mult
-(, simb_par1
-minhavariavel, id
-+, simb_soma
-3, num_inteiro
-), simb_par2
-;, simb_pv
-end, simb_end
-., simb_p
+>, simb_maior
+<>, simb_diff
+<, simb_menor
+<=, simb_menorig
+>=, simb_maiorig
+=, simb_igual
+teste, id
+=, simb_igual
+3.45, num_real

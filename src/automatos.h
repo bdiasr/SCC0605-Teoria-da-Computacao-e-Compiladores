@@ -21,7 +21,7 @@ int automato3(char* lista, int pos, elem list_simbolos);
 /*
 * automato reconhecedor de comparacoes
 */
-int automato4(char* lista, int pos);
+int automato4(char* lista, int pos, struct elemento* list_simbolos);
 
 /*
 * automato reconhecedor de atribuicoes

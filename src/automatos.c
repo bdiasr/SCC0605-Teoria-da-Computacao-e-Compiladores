@@ -225,9 +225,10 @@ int automato4(char* lista, int pos, struct elemento* list_simbolos){
     }
     else if(simb[1]!='=' && simb[1]!='>'){
         simb[1] = '\0';
+        pos--;
     }
 
-    pos++;
+    pos+=2;
     char result[20];
     strcpy(result,busca_palavra_reconhecida(simb,list_simbolos));
     strcat(result,"\n");
