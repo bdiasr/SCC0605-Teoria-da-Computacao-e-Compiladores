@@ -24,7 +24,7 @@ void analisador (char* lista, elem lista_s){ //recebe lista de caracteres e de s
         pos = automato1(lista, pos, lista_s);
         pos = automato2(lista, pos);
         pos = automato3(lista, pos, lista_s);
-        pos = automato4(lista, pos);
+        pos = automato4(lista, pos,lista_s);
         pos = automato5(lista, pos);
         pos = automato6(lista, pos);
 
@@ -83,6 +83,9 @@ int automato1(char* lista, int pos, elem list_simbolos){
 */
 int automato2(char* lista, int pos){
 
+    char msg_erro[30];
+    strcpy(msg_erro,"erro: numero mal formatado\n");
+
     //ignorando caracteres iniciais da cadeia se forem espaco ou quebra de linha
     char palavra[30];
     while(lista[pos]==' ' || lista[pos]=='\n'){
@@ -99,38 +102,74 @@ int automato2(char* lista, int pos){
     pos++;
     int j = 1;
     while(true){
-        //enquanto o simbolo lido for numero, continua neste estado
+        //enquanto o simbolo lido for numero, continua neste estado (q1)
         if(numero(lista[pos])==true){
             palavra[j] = lista[pos];
             pos++;
             j++;
             continue;
         }
-        //se ler virgula, e se ha garantia de que depois da virgula ha outro numero, so pode ser real
-        //portanto, continua lendo os numeros ate encontrar outro caractere e retorna numero real
+        //se o simbolo lido for letra, vai para o estado intermediario de erro (q6)
+        else if(letra(lista[pos])==true){
+            do{
+                palavra[j] = lista[pos];
+                pos++;
+                j++;
+            }
+            while(letra(lista[pos])==true || numero(lista[pos])==true);
+
+            //vai para o estado final de erro (q7)
+            palavra[j] = '\0';
+            printa_saida(palavra, msg_erro);
+            return pos+1;
+        }
+        //se ler ponto, vai para o estado intermediario dos reais (q3)
         else if(lista[pos]=='.'){ 
             palavra[j] = lista[pos];
             pos++;
             j++;
-            if(numero(lista[pos])==false){
-                palavra[j] = lista[pos];
-                palavra[j+1] = '\0';
-                printa_saida(palavra, "erro: numero real incompleto\n");
+            //se o simbolo lido for letra, vai para o estado intermediario de erro (q6)
+            if(letra(lista[pos])==true){
+                do{
+                    palavra[j] = lista[pos];
+                    pos++;
+                    j++;
+                }
+                while(letra(lista[pos])==true || numero(lista[pos])==true);
+
+                //vai para o estado final de erro (q7)
+                palavra[j] = '\0';
+                printa_saida(palavra, msg_erro);
                 return pos+1;
-            }
+                }
             
-            
+            //enquanto le digitos, fica no estado q4
             while(numero(lista[pos])==true){
                 palavra[j] = lista[pos];
                 pos++;
                 j++;
             }
+
+            if(letra(lista[pos])==true){
+                do{
+                    palavra[j] = lista[pos];
+                    pos++;
+                    j++;
+                }
+                while(letra(lista[pos])==true || numero(lista[pos])==true);
+
+                //vai para o estado final de erro (q7)
+                palavra[j] = '\0';
+                printa_saida(palavra, msg_erro);
+                return pos+1;
+            }
+
             palavra[j]='\0';
             //escreve resultado no arquivo
             printa_saida(palavra, "num_real\n");
             return pos;
         }
-        //se ler qualquer outro caractere ou se houver um ponto nao seguida de numeros, retorna inteiro
+        //se ler qualquer outro caractere, vai para o estado final inteiro (q2)
         else{
             palavra[j]='\0';
             //escreve resultado no arquivo
@@ -153,7 +192,7 @@ int automato3(char* lista, int pos, elem list_simbolos){
     simb[1] = '\0';
 
     //se for numero, letra ou se nao estiver na lista de reservadas, nao pode ser um simbolo unitario
-    if(simb[0]==':' || simb[0]=='>' || simb[0]=='<' || numero(simb[0])==true || letra(simb[0])==true || 
+    if(simb[0]==':' || simb[0]=='>' || simb[0]=='<' || simb[0]=='=' || numero(simb[0])==true || letra(simb[0])==true || 
     strcmp(busca_palavra_reconhecida(simb,list_simbolos), "id")== 0){
         return pos;
     }
@@ -170,78 +209,53 @@ int automato3(char* lista, int pos, elem list_simbolos){
 }
 
 //automato reconhecedor de comparacoes
-int automato4(char* lista, int pos){
-
+int automato4(char* lista, int pos, struct elemento* list_simbolos){
     //ignorando caracteres iniciais da cadeia se forem espaco ou quebra de linha
     char simb[3];
     while(lista[pos]==' ' || lista[pos]=='\n'){
         pos++;
     }
     simb[0] = lista[pos];
+    simb[1] = lista[pos+1];
     simb[2] = '\0';
 
     //se nao iniciar com maior ou menor, nao eh comparacao
-    if(simb[0]!='>' && simb[0]!='<' ){
+    if(simb[0]!='>' && simb[0]!='<' && simb[0]!='='){
         return pos;
     }
-
-    char result[20];
-
-    if(simb[0]=='>'){
-        if(lista[pos+1]=='='){
-            pos++;
-            simb[1] = '=';
-            strcpy(result, "simb_maiorig\n");
-        }
-        else{
-            simb[1] = '\0';
-            strcpy(result, "simb_maior\n");
-        }
-    }
-    else{
-        if(lista[pos+1]=='='){
-            pos++;
-            simb[1] = '=';
-            strcpy(result, "simb_menorig\n");
-        }
-        else if(lista[pos+1]=='>'){
-            pos++;
-            simb[1] = '>';
-            strcpy(result, "simb_diff\n");
-        }
-        else{
-            simb[1] = '\0';
-            strcpy(result, "simb_menor\n");
-        }
-
+    else if(simb[1]!='=' && simb[1]!='>'){
+        simb[1] = '\0';
     }
 
     pos++;
+    char result[20];
+    strcpy(result,busca_palavra_reconhecida(simb,list_simbolos));
+    strcat(result,"\n");
 
     //escreve resultado no arquivo
     printa_saida(simb,result);
     
     return pos;
+    
 }
 
 //automato reconhecedor de atribuicoes
 int automato5(char* lista, int pos){
 
-    //ignorando caracteres iniciais da cadeia se forem espaco ou quebra de linha
     char simb[3];
+    char result[20];
+
+    //ignorando caracteres iniciais da cadeia se forem espaco ou quebra de linha
     while(lista[pos]==' ' || lista[pos]=='\n'){
         pos++;
     }
     simb[0] = lista[pos];
     simb[2] = '\0';
 
-    //se nao iniciar com maior ou menor, nao eh comparacao
+    //se nao iniciar com :, nao eh atribuicao
     if(simb[0]!=':'){
         return pos;
     }
-
-    char result[20];
-
 
     if(lista[pos+1]=='='){
         pos++;
