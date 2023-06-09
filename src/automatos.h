@@ -9,7 +9,7 @@
  * @param lista 
  * @param pos 
  * @param list_simbolos 
- * @return int 
+ * @return int - posicao de leitura 
  */
 int automato1(char* lista, int pos, elem list_simbolos);
 
@@ -18,7 +18,7 @@ int automato1(char* lista, int pos, elem list_simbolos);
  * 
  * @param lista 
  * @param pos 
- * @return int 
+ * @return int - posicao de leitura 
  */
 int automato2(char* lista, int pos);
 
@@ -28,7 +28,7 @@ int automato2(char* lista, int pos);
  * @param lista 
  * @param pos 
  * @param list_simbolos 
- * @return int 
+ * @return int - posicao de leitura 
  */
 int automato3(char* lista, int pos, elem list_simbolos);
 
@@ -38,7 +38,7 @@ int automato3(char* lista, int pos, elem list_simbolos);
  * @param lista 
  * @param pos 
  * @param list_simbolos 
- * @return int 
+ * @return int - posicao de leitura
  */
 int automato4(char* lista, int pos, struct elemento* list_simbolos);
 
@@ -47,7 +47,7 @@ int automato4(char* lista, int pos, struct elemento* list_simbolos);
  * 
  * @param lista 
  * @param pos 
- * @return int 
+ * @return int int - posicao de leitura
  */
 int automato5(char* lista, int pos);
 
@@ -56,7 +56,7 @@ int automato5(char* lista, int pos);
  * 
  * @param lista 
  * @param pos 
- * @return int 
+ * @return int - posicao de leitura
  */
 int automato6(char* lista, int pos);
 
