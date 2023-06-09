@@ -1,30 +1,37 @@
 program, simb_program
-p, id
+outroteste, id
 ;, simb_pv
+{erro de caracter fora da linguagem}, comment
 var, simb_var
-x, id
-@, erro('caractere nao permitido')
+a, id
+,, simb_virg
+minhavariavel, id
 :, simb_dp
 integer, simb_integer
 ;, simb_pv
 begin, simb_begin
-{teste teste som som}, comment
-x, id
-:=, simb_atrib
-1.2, num_real
-;, simb_pv
-while, simb_while
+read, simb_read
 (, simb_par1
-x, id
-<, simb_menor
+minhavariavel, id
+,, simb_virg
+@, erro('caractere nao permitido')
+,, simb_virg
+1.a, erro: numero real incompleto
+23, num_inteiro
+), simb_par2
+;, simb_pv
+b, id
+:=, simb_atrib
+2.34, num_real
+a, id
+:=, simb_atrib
+2, num_inteiro
+*, simb_mult
+(, simb_par1
+minhavariavel, id
++, simb_soma
 3, num_inteiro
 ), simb_par2
-do, simb_do
-x, id
-:=, simb_atrib
-x, id
-+, simb_soma
-1, num_inteiro
-{teste comentar eh muito legal!!}, comment
+;, simb_pv
 end, simb_end
 ., simb_p

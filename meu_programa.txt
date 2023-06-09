@@ -1,9 +1,8 @@
-program p;
-var x@: integer;
-BEGIN
-        {teste teste som som}
-        x:=1.2;
-        while(x<3) do
-                x:=x+1
-{teste comentar eh muito legal!!}
+program outroteste;
+{erro de caracter fora da linguagem}
+var a, minhavariavel: integer;
+begin
+read(minhavariavel,@,1.a23);
+B:=2.34a
+a:=2*(minhavariavel+3);
 end.

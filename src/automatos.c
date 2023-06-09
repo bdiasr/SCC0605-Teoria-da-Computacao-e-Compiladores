@@ -78,7 +78,9 @@ int automato1(char* lista, int pos, elem list_simbolos){
     return pos;
 }
 
-//automato reconhecedor de numeros
+/*
+* automato reconhecedor de numeros
+*/
 int automato2(char* lista, int pos){
 
     //ignorando caracteres iniciais da cadeia se forem espaco ou quebra de linha
@@ -106,10 +108,18 @@ int automato2(char* lista, int pos){
         }
         //se ler virgula, e se ha garantia de que depois da virgula ha outro numero, so pode ser real
         //portanto, continua lendo os numeros ate encontrar outro caractere e retorna numero real
-        else if(lista[pos]=='.' && numero(lista[pos+1])==true){ 
+        else if(lista[pos]=='.'){ 
             palavra[j] = lista[pos];
             pos++;
             j++;
+            if(numero(lista[pos])==false){
+                palavra[j] = lista[pos];
+                palavra[j+1] = '\0';
+                printa_saida(palavra, "erro: numero real incompleto\n");
+                return pos+1;
+            }
+            
+            
             while(numero(lista[pos])==true){
                 palavra[j] = lista[pos];
                 pos++;
@@ -120,16 +130,14 @@ int automato2(char* lista, int pos){
             printa_saida(palavra, "num_real\n");
             return pos;
         }
-        //se ler qualquer outro caractere ou se houver uma virgula nao seguida de numeros, retorna inteiro
+        //se ler qualquer outro caractere ou se houver um ponto nao seguida de numeros, retorna inteiro
         else{
             palavra[j]='\0';
             //escreve resultado no arquivo
             printa_saida(palavra, "num_inteiro\n");
             return pos;
         }
-
     }
-
     return pos;
 }
 
@@ -253,7 +261,7 @@ int automato5(char* lista, int pos){
     return pos;
 }
 
-//automato reconhecedor de atribuicoes
+//automato reconhecedor de cometarios
 int automato6(char* lista, int pos){
 
     char palavra[50];

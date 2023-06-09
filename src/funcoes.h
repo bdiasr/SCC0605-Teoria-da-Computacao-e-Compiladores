@@ -7,7 +7,7 @@
 #define FUNCOES_H
 
 #define NUM_SIMBOLOS 27 //numero fixo de simbolos na tabela de simbolos
-#define TAM 1000 //tamanho maximo da lista inicial de caracteres
+#define TAM 10000 //tamanho maximo da lista inicial de caracteres
 
 //estrutura da lista de tokens e simbolos
 struct elemento{
