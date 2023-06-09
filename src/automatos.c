@@ -2,174 +2,45 @@
 #include <stdlib.h>
 #include <string.h>
 #include <stdbool.h>
-#include "funcoes.h"
 
-void limpa_saida(){
+#include "automatos.h"
 
-    //abrir arquivo txt de saida com w+
-    FILE *saida;
-    saida = fopen("saida.txt", "w+");
-    if(saida == NULL){
-        printf("erro no arquivo de saida!\n");
-        exit(1);
-    }
-    //fecha arquivo txt de saida
-    fclose(saida);
-}
+//analisador lexico
+void analisador (char* lista, elem lista_s){ //recebe lista de caracteres e de simbolos
 
-void printa_saida(char* simbolo, char* token){
-
-    //abrir arquivo txt de saida
-    FILE *saida;
-    saida = fopen("saida.txt", "a+");
-    if(saida == NULL){
-        printf("erro no arquivo de saida!\n");
-        exit(1);
-    }
-
-    fprintf(saida,simbolo);
-    fprintf(saida,", ");
-    fprintf(saida,token);
-
-    //fecha arquivo txt de saida
-    fclose(saida);
-}
-
-//verifica se caractere corresponde a um numero
-bool numero(char x){
-    if(x>47 && x<58){
-        return true;
-    }
-    return false;
-}
-
-//verifica se caractere corresponde a uma letra
-bool letra(char x){
-    if(x<65 || (x>90 && x<97) || x>122){
-        return false;
-    }
-    return true;
-}
-
-//função que coloca as palavras em caixa alta para facilitar comparações
-char* caixa_baixa(char* palavra){
-    int i;
-
-    for(i = 0; palavra[i]!= '\0'; i++){
-        if(palavra[i] >= 'A' && palavra[i] <= 'Z'){
-            palavra[i] = palavra[i] + 32;
-        }
-    }
-    return palavra;
-
-}
-
-char* busca_palavra_reconhecida(char* palavra, elem lista_simbolos){
-
-    //percorre a lista de palavras reconhecidas
-    for (int i = 0;i<NUM_SIMBOLOS;i++){
+    //define posicao inicial de analise como inicio da lista de caracteres
+    int pos = 0;
+    
+    //percorre lista de caracteres
+    while(lista[pos]!='\0'){
         
-        if(strcmp(caixa_baixa(palavra),lista_simbolos[i].simbolo)==0){//se encontrar simbolo igual, retorna token
-            return lista_simbolos[i].token;
+        //ignorando caracteres iniciais da cadeia se forem espaco ou quebra de linha
+        while(lista[pos]==' ' || lista[pos]=='\n'){
+            pos++;
         }
-    }
-    return "id"; //se nao encontrou simbolo igual, retorna que eh um id
-}
+        int pos_init = pos; //marca posicao do caractere atual
 
+        //acionar automatos reconhecedores, incrementando posicao na lista se ha sucesso de reconhecimento
+        pos = automato1(lista, pos, lista_s);
+        pos = automato2(lista, pos);
+        pos = automato3(lista, pos, lista_s);
+        pos = automato4(lista, pos);
+        pos = automato5(lista, pos);
+        pos = automato6(lista, pos);
 
-//cria e preenche lista de caracteres de entrada
-char* cria_lista_caracteres(){
-    char* lista = (char*) malloc (TAM*sizeof(char));
-    for(int i = 0;i<TAM;i++){
-        lista[i] = '\0';
-    }
+        //se caractere nao reconhecido por nenhum automato
+        if(pos == pos_init){
+            if(lista[pos+1]!='\0'){ //se nao eh o caractere de fim de arquivo
 
-    //abrir arquivo txt de entrada
-    FILE *prog_inicial;
-    prog_inicial = fopen("meu_programa.txt", "r");
-    if(prog_inicial == NULL){
-        printf("erro no arquivo de entrada!\n");
-        exit(1);
-    }
-
-    //le cada caractere do arquivo de entrada
-    while(!feof(prog_inicial)){
-        char p = fgetc(prog_inicial);
-        if(p!='\t' && p!=feof(prog_inicial)){
-            for(int i = 0;i<TAM;i++){
-                if(lista[i]=='\0'){
-                    lista[i] = p;
-                    break;
-                }
+                //retorna erro de leitura do caractere
+                char erro[2];
+                erro[0] = lista[pos];
+                erro[1] = '\0';
+                printa_saida(erro,"erro('caractere nao permitido')\n");
             }
+            pos++;
         }
     }
-
-    fclose(prog_inicial);
-    return lista;
-}
-
-struct elemento preenche_simbolos(FILE* file){
-
-    char linha[50];
-    struct elemento no;
-    char simbolo[20];
-    char token[20];
-    long int tam = ftell(file);
-      
-    fscanf(file, "%[^\n]%*c ", linha);
-
-    if(tam<399){
-        int k = 0;
-        int i = 0;
-        while(linha[i]!='|'){
-            simbolo[k] = linha[i];
-            k++;
-            i++;           
-        }
-        simbolo[k] = '\0';
-        
-        k = 0;
-        i++;
-        while(linha[i]!='\n' && linha[i]!='\0'){
-            token[k] = linha[i];
-            k++;
-            i++;
-        }
-        token[k] = '\0';
-          
-        strcpy(no.simbolo, simbolo);
-        strcpy(no.token, token);  
-    }
-    else{
-        strcpy(no.simbolo, "\0");
-        strcpy(no.token, "\0");
-    }
-
-    return no; 
-
-}
-
-elem cria_lista_simbolos(){
-
-    //abrir tabela de simbolos
-    FILE *list_s;
-    list_s = fopen("tab_simb.txt", "a+");
-    if(list_s == NULL){
-        printf("erro na tabela de simbolos!\n");
-        exit(1);
-    }
-
-    
-    elem lista = (elem) malloc (NUM_SIMBOLOS*sizeof(struct elemento));
-    
-    for(int i = 0;i<NUM_SIMBOLOS;i++){
-        lista[i] = preenche_simbolos(list_s);
-    }
-    
-    
-    fclose(list_s);
-    return lista;
 }
 
 //automato reconhecedor de palavras reservadas e identificadores
@@ -274,7 +145,8 @@ int automato3(char* lista, int pos, elem list_simbolos){
     simb[1] = '\0';
 
     //se for numero, letra ou se nao estiver na lista de reservadas, nao pode ser um simbolo unitario
-    if(simb[0]==':' || simb[0]=='>' || simb[0]=='<' || numero(simb[0])==true || letra(simb[0])==true || busca_palavra_reconhecida(simb,list_simbolos)=="id"){
+    if(simb[0]==':' || simb[0]=='>' || simb[0]=='<' || numero(simb[0])==true || letra(simb[0])==true || 
+    strcmp(busca_palavra_reconhecida(simb,list_simbolos), "id")== 0){
         return pos;
     }
 
@@ -384,14 +256,17 @@ int automato5(char* lista, int pos){
 //automato reconhecedor de atribuicoes
 int automato6(char* lista, int pos){
 
-    //ignorando caracteres iniciais da cadeia se forem espaco ou quebra de linha
     char palavra[50];
+
+    //ignorando caracteres iniciais da cadeia se forem espaco ou quebra de linha
     while(lista[pos]==' ' || lista[pos]=='\n'){
         pos++;
     }
+
+    //palavra inicial
     palavra[0] = lista[pos];
 
-    //se nao iniciar com maior ou menor, nao eh comparacao
+    //se a primeira letra for diferentes de chaves -> nao eh comentario
     if(palavra[0]!='{'){
         return pos;
     }
@@ -405,10 +280,11 @@ int automato6(char* lista, int pos){
         if (lista[pos]=='}'){
             palavra[j] = lista[pos];
             palavra[j+1] = '\0';
+
             strcpy(result,"comment\n");
 
             //escreve resultado no arquivo
-            printa_saida(palavra,result);
+            printa_saida(palavra, result);
             return pos+1;
         }
         else{
@@ -423,48 +299,8 @@ int automato6(char* lista, int pos){
     strcpy(result,"erro: comentario nao finalizado\n");
 
     //escreve resultado no arquivo
-    printa_saida(palavra,result);
+    printa_saida(palavra, result);
 
     return pos;
-    
-}
-
-//analisador lexico
-void analisador (char* lista, elem lista_s){ //recebe lista de caracteres e de simbolos
-
-    //define posicao inicial de analise como inicio da lista de caracteres
-    int pos = 0;
-    
-    //percorre lista de caracteres
-    while(lista[pos]!='\0'){
-        
-        //ignorando caracteres iniciais da cadeia se forem espaco ou quebra de linha
-        while(lista[pos]==' ' || lista[pos]=='\n'){
-            pos++;
-        }
-        int pos_init = pos; //marca posicao do caractere atual
-
-        //acionar automatos reconhecedores, incrementando posicao na lista se ha sucesso de reconhecimento
-        pos = automato1(lista, pos, lista_s);
-        pos = automato2(lista, pos);
-        pos = automato3(lista, pos, lista_s);
-        pos = automato4(lista, pos);
-        pos = automato5(lista, pos);
-        pos = automato6(lista, pos);
-
-        //se caractere nao reconhecido por nenhum automato
-        if(pos == pos_init){
-            if(lista[pos+1]!='\0'){ //se nao eh o caractere de fim de arquivo
-
-                //retorna erro de leitura do caractere
-                char erro[2];
-                erro[0] = lista[pos];
-                erro[1] = '\0';
-                printa_saida(erro,"erro('caractere nao permitido')\n");
-            }
-            pos++;
-        }
-
-    }
     
 }

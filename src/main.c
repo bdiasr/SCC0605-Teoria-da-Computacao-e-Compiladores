@@ -2,8 +2,8 @@
 #include <stdlib.h>
 #include <string.h>
 #include <stdbool.h>
-#include "funcoes.h"
 
+#include "automatos.h"
 
 //funcao principal
 int main(int argc, char*argv[]){
@@ -27,3 +27,4 @@ int main(int argc, char*argv[]){
     return 0;
 
 }
+
