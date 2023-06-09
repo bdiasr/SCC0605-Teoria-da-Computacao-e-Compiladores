@@ -19,10 +19,10 @@ O programa fonte (meu_programa.txt) é lido, caractere a caractere, para separa�
 ![Automato 4](img/automato4.jpeg)
 *Automato Reconhecedor de Comparações*
 
-![Automato 5](img/automato5.png)
+![Automato 5](img/automato5.jpeg)
 *Automato Reconhecedor de Atribuições*
 
-![Automato 6](img/automato6.png)
+![Automato 6](img/automato6.jpeg)
 *Automato Reconhecedor de Comentários*
 
 Uma vez reconhecida por um dos autômatos, a cadeia é adicionada ao arquivo de saída (saida.txt). Caso não seja reconhecida por nenhum dos autômatos, é retornado o erro.
