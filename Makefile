@@ -1,6 +1,6 @@
 CC = gcc
 CFLAGS = -Wall -Wextra -g
-TARGET = programa
+TARGET = analisador-lexico
 
 SRCDIR = src
 OBJDIR = obj
