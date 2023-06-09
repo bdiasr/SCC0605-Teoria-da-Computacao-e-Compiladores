@@ -1,6 +1,6 @@
 program p;
 var x@: integer;
-begin
+BEGIN
         {teste teste som som}
         x:=1.2;
         while(x<3) do

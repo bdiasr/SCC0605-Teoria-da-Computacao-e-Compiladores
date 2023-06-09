@@ -5,9 +5,8 @@
 #include "funcoes.h"
 #include "automatos.h"
 
-/*
 //automato reconhecedor de palavras reservadas e identificadores
-int automato1(char* lista, int pos, elem* list_simbolos,FILE *saida){
+int automato1(char* lista, int pos, elem list_simbolos){
 
     char palavra[30];
     palavra[0] = lista[pos];
@@ -35,16 +34,14 @@ int automato1(char* lista, int pos, elem* list_simbolos,FILE *saida){
     strcat(result,"\n");
 
     //escreve resultado no arquivo
-    fprintf(saida,palavra);
-    fprintf(saida,", ");
-    fprintf(saida,result);
+    printa_saida(palavra,result);
 
     //retorna posicao atual
     return pos;
 }
 
 //automato reconhecedor de numeros
-int automato2(char* lista, int pos,FILE *saida){
+int automato2(char* lista, int pos){
 
     //ignorando caracteres iniciais da cadeia se forem espaco ou quebra de linha
     char palavra[30];
@@ -71,7 +68,7 @@ int automato2(char* lista, int pos,FILE *saida){
         }
         //se ler virgula, e se ha garantia de que depois da virgula ha outro numero, so pode ser real
         //portanto, continua lendo os numeros ate encontrar outro caractere e retorna numero real
-        else if(lista[pos]==',' && numero(lista[pos+1])==true){ 
+        else if(lista[pos]=='.' && numero(lista[pos+1])==true){ 
             palavra[j] = lista[pos];
             pos++;
             j++;
@@ -82,18 +79,14 @@ int automato2(char* lista, int pos,FILE *saida){
             }
             palavra[j]='\0';
             //escreve resultado no arquivo
-            fprintf(saida,palavra);
-            fprintf(saida,", ");
-            fprintf(saida,"num_real\n");
+            printa_saida(palavra, "num_real\n");
             return pos;
         }
         //se ler qualquer outro caractere ou se houver uma virgula nao seguida de numeros, retorna inteiro
         else{
             palavra[j]='\0';
             //escreve resultado no arquivo
-            fprintf(saida,palavra);
-            fprintf(saida,", ");
-            fprintf(saida,"num_inteiro\n");
+            printa_saida(palavra, "num_inteiro\n");
             return pos;
         }
 
@@ -103,7 +96,7 @@ int automato2(char* lista, int pos,FILE *saida){
 }
 
 //automato reconhecedor de simbolos unitarios
-int automato3(char* lista, int pos, elem* list_simbolos,FILE *saida){
+int automato3(char* lista, int pos, elem list_simbolos){
 
     //ignorando caracteres iniciais da cadeia se forem espaco ou quebra de linha
     char simb[2];
@@ -124,15 +117,13 @@ int automato3(char* lista, int pos, elem* list_simbolos,FILE *saida){
     strcat(result,"\n");
 
     //escreve resultado no arquivo
-    fprintf(saida,simb);
-    fprintf(saida,", ");
-    fprintf(saida,result);
+    printa_saida(simb,result);
     
     return pos;
 }
 
 //automato reconhecedor de comparacoes
-int automato4(char* lista, int pos, elem* list_simbolos,FILE *saida){
+int automato4(char* lista, int pos){
 
     //ignorando caracteres iniciais da cadeia se forem espaco ou quebra de linha
     char simb[3];
@@ -181,15 +172,13 @@ int automato4(char* lista, int pos, elem* list_simbolos,FILE *saida){
     pos++;
 
     //escreve resultado no arquivo
-    fprintf(saida,simb);
-    fprintf(saida,", ");
-    fprintf(saida,result);
+    printa_saida(simb,result);
     
     return pos;
 }
 
 //automato reconhecedor de atribuicoes
-int automato5(char* lista, int pos, elem* list_simbolos,FILE *saida){
+int automato5(char* lista, int pos){
 
     //ignorando caracteres iniciais da cadeia se forem espaco ou quebra de linha
     char simb[3];
@@ -220,15 +209,13 @@ int automato5(char* lista, int pos, elem* list_simbolos,FILE *saida){
     pos++;
 
     //escreve resultado no arquivo
-    fprintf(saida,simb);
-    fprintf(saida,", ");
-    fprintf(saida,result);
+    printa_saida(simb,result);
     
     return pos;
 }
 
-//automato reconhecedor de comentarios
-int automato6(char* lista, int pos,FILE *saida){
+//automato reconhecedor de atribuicoes
+int automato6(char* lista, int pos){
 
     //ignorando caracteres iniciais da cadeia se forem espaco ou quebra de linha
     char palavra[50];
@@ -237,7 +224,7 @@ int automato6(char* lista, int pos,FILE *saida){
     }
     palavra[0] = lista[pos];
 
-    //se nao iniciar {, nao eh comentario
+    //se nao iniciar com maior ou menor, nao eh comparacao
     if(palavra[0]!='{'){
         return pos;
     }
@@ -246,27 +233,16 @@ int automato6(char* lista, int pos,FILE *saida){
 
     int j = 1;
     pos++;
-    while(true){
-        if(palavra[pos]=='\n'){
-            strcpy(result,"erro: conjunto de caracteres nao reconhecido\n");
+    while(lista[pos]!='\n'){
 
-            //escreve resultado no arquivo
-            fprintf(saida,palavra);
-            fprintf(saida,", ");
-            fprintf(saida,result);
-
-            return pos;
-        }
-        else if (palavra[pos]=='}'){
+        if (lista[pos]=='}'){
             palavra[j] = lista[pos];
+            palavra[j+1] = '\0';
             strcpy(result,"comment\n");
 
             //escreve resultado no arquivo
-            fprintf(saida,palavra);
-            fprintf(saida,", ");
-            fprintf(saida,result);
-
-            return pos;
+            printa_saida(palavra,result);
+            return pos+1;
         }
         else{
             palavra[j] = lista[pos];
@@ -274,7 +250,13 @@ int automato6(char* lista, int pos,FILE *saida){
             pos++;
         }
     }
+    palavra[j+1] = '\0';
     
-}
+    //deu erro!!
+    strcpy(result,"erro: comentario nao finalizado\n");
 
-*/
+    //escreve resultado no arquivo
+    printa_saida(palavra,result);
+
+    return pos;
+}

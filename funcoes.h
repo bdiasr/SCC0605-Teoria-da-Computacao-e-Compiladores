@@ -1,40 +1,21 @@
-#include <stdio.h>
-#include <stdlib.h>
-#include <string.h>
-#include <stdbool.h>
-#include "automatos.h" 
-
-#define TAM 1000
-
-typedef char Dado[20];
+#define NUM_SIMBOLOS 27 //numero fixo de simbolos na tabela de simbolos
+#define TAM 1000 //tamanho maximo da lista inicial de caracteres
 
 //estrutura da lista de tokens e simbolos
 struct elemento{
     char simbolo[20];
     char token[20];
-    struct elemento *prox;
 };
 
-typedef struct elemento elem;
-typedef struct elemento* Lista;
-
-
+typedef struct elemento* elem;
 
 bool numero(char x);
 bool letra(char x);
 
+void limpa_saida();
+void printa_saida(char* simbolo, char* token);
+char* caixa_baixa(char* palavra);
+char* busca_palavra_reconhecida(char* palavra, elem lista_simbolos);
 char* cria_lista_caracteres();
-
-Lista* cria_lista();
-void imprime_lista(Lista* li);
-Lista* cria_lista_simbolos();
-
-//void analisador (char* lista, elem* lista_s);
-//char* busca_palavra_reconhecida(char* palavra, elem* lista_simbolos);
-
-
-void lista_caracteres(FILE* arq );
-
-//int insere_lista_ordenada(Lista* li, Tipo_Dado dt);
-int isSpecialChar(char c); 
-void printWords(char** words, int numWords); 
+struct elemento preenche_simbolos(FILE* file);
+elem cria_lista_simbolos();
