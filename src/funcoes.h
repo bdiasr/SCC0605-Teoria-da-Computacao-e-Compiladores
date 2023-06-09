@@ -17,24 +17,76 @@ struct elemento{
 
 typedef struct elemento* elem;
 
+
+/**
+ * @brief verifica se caractere corresponde a um numero
+ * 
+ * @param x 
+ * @return true 
+ * @return false 
+ */
 bool numero(char x);
+
+/**
+ * @brief verifica se caractere corresponde a uma letra
+ * 
+ * @param x 
+ * @return true 
+ * @return false 
+ */
 bool letra(char x);
 
+/**
+ * @brief Limpa o arquivo e saida
+ * 
+ */
 void limpa_saida();
-void printa_saida(char* simbolo, char* token);
-char* caixa_baixa(char* palavra);
-char* busca_palavra_reconhecida(char* palavra, elem lista_simbolos);
-char* cria_lista_caracteres();
-struct elemento preenche_simbolos(FILE* file);
-elem cria_lista_simbolos();
 
-/*
-int automato1(char* lista, int pos, elem list_simbolos);
-int automato2(char* lista, int pos);
-int automato3(char* lista, int pos, elem list_simbolos);
-int automato4(char* lista, int pos);
-int automato5(char* lista, int pos);
-int automato6(char* lista, int pos);
-*/
+/**
+ * @brief Escreve no arquivo de saida o par simbolo, token correspondente 
+ * 
+ * @param simbolo 
+ * @param token 
+ */
+void printa_saida(char* simbolo, char* token);
+
+/**
+ * @brief Funcao auxiliar que transforma o char* palavra em caixa baixa, facilitando as comparacoes. 
+ * 
+ * @param palavra 
+ * @return char* 
+ */
+char* caixa_baixa(char* palavra);
+
+/**
+ * @brief percorre a lista de palavras reconhecidas, retornando o token caso encontrada. 
+ * 
+ * @param palavra 
+ * @param lista_simbolos 
+ * @return char* 
+ */
+char* busca_palavra_reconhecida(char* palavra, elem lista_simbolos);
+
+/**
+ * @brief Criacao da lista de caracteres de entrada. 
+ * 
+ * @return char* 
+ */
+char* cria_lista_caracteres();
+
+/**
+ * @brief preenche a lista de simbolo-token. 
+ * 
+ * @param file 
+ * @return struct elemento 
+ */
+struct elemento preenche_simbolos(FILE* file);
+
+/**
+ * @brief Cria a lista de simbolo-token. 
+ * 
+ * @return elem 
+ */
+elem cria_lista_simbolos();
 
 #endif 

@@ -276,7 +276,7 @@ int automato5(char* lista, int pos){
     return pos;
 }
 
-//automato reconhecedor de cometarios
+//automato reconhecedor de comentarios
 int automato6(char* lista, int pos){
 
     char palavra[50];
