@@ -1,22 +1,22 @@
 # SCC0605-Teoria-da-Computacao-e-Compiladores
 Implementação de analisador léxico desenvolvido para a linguagem P (cuja gramática está definida abaixo) realizada em C, com auxílio de autômatos finitos para identificação das cadeias aceitas.
 
-![Gramática de P](img/gramaticaP.png)
+![Gramática de P](img/gramaticaP.jpeg)
 *Gramática da Linguagem P*
 
 ## Funcionamento
 O programa fonte (meu_programa.txt) é lido, caractere a caractere, para separação das cadeias. Uma vez identificadas as cadeias, estas são submetidas aos autômatos para identificação dos tokens. O autômatos utilizados estão definidos abaixo:
 
-![Automato 1](img/automato1.png)
+![Automato 1](img/automato1.jpeg)
 *Automato Reconhecedor de Identificadores e Palavras Reservadas*
 
-![Automato 2](img/automato2.png)
+![Automato 2](img/automato2.jpeg)
 *Automato Reconhecedor de Números*
 
-![Automato 3](img/automato3.png)
+![Automato 3](img/automato3.jpeg)
 *Automato Reconhecedor de Símbolos Unitários*
 
-![Automato 4](img/automato4.png)
+![Automato 4](img/automato4.jpeg)
 *Automato Reconhecedor de Comparações*
 
 ![Automato 5](img/automato5.png)
