@@ -3,17 +3,12 @@ p, id
 ;, simb_pv
 var, simb_var
 x, id
-@, id
+@, erro('caractere nao permitido')
 :, simb_dp
 integer, simb_integer
 ;, simb_pv
 begin, simb_begin
-{, id
-teste, id
-teste, id
-som, id
-som, id
-}, id
+{teste teste som som}, comment
 x, id
 :=, simb_atrib
 1.2, num_real
@@ -30,6 +25,6 @@ x, id
 x, id
 +, simb_soma
 1, num_inteiro
+{teste comentar eh muito legal!!}, comment
 end, simb_end
 ., simb_p
-ÿ, id

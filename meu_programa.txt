@@ -5,4 +5,5 @@ BEGIN
         x:=1.2;
         while(x<3) do
                 x:=x+1
+{teste comentar eh muito legal!!}
 end.

@@ -19,3 +19,12 @@ char* busca_palavra_reconhecida(char* palavra, elem lista_simbolos);
 char* cria_lista_caracteres();
 struct elemento preenche_simbolos(FILE* file);
 elem cria_lista_simbolos();
+
+void analisador (char* lista, elem lista_s);
+
+int automato1(char* lista, int pos, elem list_simbolos);
+int automato2(char* lista, int pos);
+int automato3(char* lista, int pos, elem list_simbolos);
+int automato4(char* lista, int pos);
+int automato5(char* lista, int pos);
+int automato6(char* lista, int pos);
